@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -eu
+
+portForward() {
+  target_ns=credentials
+  target_svc=partner
+  target_port=443
+  bind_addr=0.0.0.0
+  bind_port=3443
+
+  node_port=$(kubectl get service -n ${target_ns} ${target_svc} -o=jsonpath="{.spec.ports[?(@.port==${target_port})].nodePort}")
+  if [[ "$node_port" == "" ]]
+  then
+    kubectl get service -n ${target_ns} ${target_svc} -o wide
+    echo -e "\ncan not get node port. check type LoadBalancer status.\n"
+    kubectl port-forward -n ${target_ns} service/${target_svc} --address ${bind_addr} ${bind_port}:${target_port}
+    return 1
+  fi
+  node_addr=$(docker network inspect kind | jp "[?Name=='kind']|[0].Containers.*|[?Name=='production-control-plane']|[0].IPv4Address" | sed -e 's/"//g' | awk -F/ '{print $1}')
+  echo bind=$bind_addr:$bind_port node=$node_addr:$node_port
+  docker run --name kind-proxy-${bind_port} -p ${bind_addr}:${bind_port}:${bind_port} --network kind \
+    -d alpine/socat -dd tcp-listen:${bind_port},fork,reuseaddr tcp-connect:${node_addr}:${node_port}
+}
+
+portForward
+echo 'succeeded'

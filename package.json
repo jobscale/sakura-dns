@@ -1,0 +1,27 @@
+{
+  "name": "sakura-dns",
+  "private": true,
+  "version": "0.0.1",
+  "description": "sakura-dns",
+  "author": "jobscale <jobscale@users.noreply.github.com>",
+  "main": "app/index.js",
+  "scripts": {
+    "start": "node .",
+    "inspect": "node --inspect-brk .",
+    "lint": "date +%s%3N && eslint .",
+    "test": "npm run lint"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "dependencies": {
+    "@jobscale/logger": "^0.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "pre-commit": "^1.2.2"
+  },
+  "license": "MIT"
+}
