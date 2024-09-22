@@ -3,7 +3,7 @@ const { decode } = require('./js-proxy');
 
 const {
   ENV, DOMAIN, TOKEN, DNS_CONFIG,
-  TYPE, R_DATA,
+  TYPE, R_DATA, MULTIPLE,
 } = process.env;
 
 const ZONE = 'is1a';
@@ -69,7 +69,7 @@ class App {
     const zone = await this.getDNSRecords(env, 'jsx.jp');
     const host = DOMAIN;
     const records = zone.ResourceRecordSets.filter(
-      item => item.Type !== Type || item.Name !== host,
+      item => MULTIPLE || (item.Type !== Type || item.Name !== host),
     );
     const record = { Name: host, Type, RData: ip, TTL: 120 };
     records.push(record);
@@ -85,7 +85,7 @@ class App {
     const zone = await this.getDNSRecords(env, 'jsx.jp');
     const host = DOMAIN;
     const records = zone.ResourceRecordSets.filter(
-      item => item.Type !== Type || item.Name !== host,
+      item => MULTIPLE || (item.Type !== Type || item.Name !== host),
     );
     const record = { Name: host, Type, RData, TTL: 120 };
     records.push(record);
