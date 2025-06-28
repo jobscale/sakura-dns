@@ -1,10 +1,12 @@
-const { logger } = require('@jobscale/logger');
+const { createLogger } = require('@jobscale/logger');
 const { decode } = require('./js-proxy');
 
 const {
-  ENV, DOMAIN, TOKEN, DNS_CONFIG,
+  ENV, LOG_LEVEL, DOMAIN, TOKEN, DNS_CONFIG,
   TYPE, R_DATA, MULTIPLE, DELETE,
 } = process.env;
+
+const logger = createLogger(LOG_LEVEL);
 
 const ZONE = 'is1a';
 const API = `https://secure.sakura.ad.jp/cloud/zone/${ZONE}/api/cloud/1.1`;
@@ -87,7 +89,7 @@ class App {
     });
     if (!DELETE) records.push(record);
     const sorted = this.sort(records);
-    logger.info(JSON.stringify(sorted, null, 2));
+    logger.debug(JSON.stringify(sorted));
     const data = await this.putDNSRecords(env, { ...zone, ResourceRecordSets: sorted });
     logger.info(JSON.stringify({ ...data, CommonServiceItem: undefined }, null, 2));
     return 'ok';
