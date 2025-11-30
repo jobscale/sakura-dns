@@ -1,4 +1,4 @@
-FROM node:lts-bookworm-slim
+FROM node:lts-tixie-slim
 SHELL ["bash", "-c"]
 WORKDIR /home/node
 COPY --chown=node:staff package.json .
