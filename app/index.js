@@ -1,5 +1,5 @@
-const { createLogger } = require('@jobscale/logger');
-const { decode } = require('./js-proxy');
+import { createLogger } from '@jobscale/logger';
+import { decode } from './js-proxy.js';
 
 const {
   ENV, LOG_LEVEL, DOMAIN, TOKEN, DNS_CONFIG,
@@ -28,7 +28,7 @@ class App {
     .then(res => this.allowInsecure(false) && res)
     .then(res => res.json())
     .catch(() => {
-      const token = (TOKEN === 'test' && ENV === 'dev')
+      const token = TOKEN === 'test' && ENV === 'dev'
         ? Math.floor(Date.now() / 1000)
         : Number.parseInt(TOKEN, 10) || 0;
       const match = Math.floor(Date.now() / 1000);
