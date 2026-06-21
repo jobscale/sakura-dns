@@ -70,6 +70,8 @@ class App {
       if (aName < bName) return -1;
       if (a.Type > b.Type) return 1;
       if (a.Type < b.Type) return -1;
+      if (a.RData > b.RData) return 1;
+      if (a.RData < b.RData) return -1;
       return 0;
     });
   }
@@ -89,7 +91,7 @@ class App {
     });
     if (!DELETE) records.push(record);
     const sorted = this.sort(records);
-    logger.debug(JSON.stringify(sorted));
+    logger.debug(JSON.stringify(sorted, null, 2));
     const data = await this.putDNSRecords(env, { ...zone, ResourceRecordSets: sorted });
     logger.info(JSON.stringify({ ...data, CommonServiceItem: undefined }, null, 2));
     return 'ok';
