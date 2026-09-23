@@ -1,4 +1,4 @@
-import { createLogger } from '@jobscale/logger';
+import { createLogger } from '@jobscale/create-logger';
 import { decode } from './js-proxy.js';
 
 const {
@@ -91,7 +91,7 @@ class App {
     });
     if (!DELETE) records.push(record);
     const sorted = this.sort(records);
-    logger.debug(JSON.stringify(sorted, null, 2));
+    if (LOG_LEVEL === 'debug') logger.error(JSON.stringify(sorted));
     const data = await this.putDNSRecords(env, { ...zone, ResourceRecordSets: sorted });
     logger.info(JSON.stringify({ ...data, CommonServiceItem: undefined }, null, 2));
     return 'ok';
