@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "sakura-dns",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "sakura-dns",
   "author": "jobscale <jobscale@users.noreply.github.com>",
   "license": "MIT",
@@ -15,7 +15,7 @@
   },
   "pre-commit": "test",
   "dependencies": {
-    "@jobscale/create-logger": "^1.0.4"
+    "@jobscale/create-logger": "^1.0.5"
   },
   "devDependencies": {
     "@jobscale/eslint-plugin-standard": "^0.1.4",
