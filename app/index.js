@@ -84,10 +84,11 @@ class App {
     logger.info(`Dynamic DNS polling. - [${ENV}]`, JSON.stringify(record, null, 2));
     const zone = await this.getDNSRecords(env, 'jsx.jp');
     const records = zone.ResourceRecordSets.filter(item => {
-      if (MULTIPLE || item.Name !== host) return true;
+      if (item.Name !== host) return true;
+      if (item.Type === 'CNAME' || Type === 'CNAME') return false;
+      if (MULTIPLE) return true;
       if (DELETE || item.Type === Type) return false;
-      const diff = ['A', 'CNAME'];
-      return !(diff.includes(item.Type) && diff.includes(Type));
+      return true;
     });
     if (!DELETE) records.push(record);
     const sorted = this.sort(records);
