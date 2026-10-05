@@ -174,7 +174,7 @@ class App {
     logger.info({ ts: ts.getTime(), now: ts.toISOString() });
     this.main()
     .then(message => logger.info({ message }))
-    .catch(e => logger.error(e));
+    .catch(e => logger.error(e.cause?.message ?? e.cause ?? e.message));
   }
 }
 
